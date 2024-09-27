@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Canciones y Formulario a Telegram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+        form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lista de Canciones</h1>
+
+    <div id="buttons"></div>
+    <div id="songList"></div>
+
+    <h1>Formulario de Contacto</h1>
+    <form id="telegramForm">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="phone">Teléfono:</label>
+        <input type="tel" id="phone" name="phone" placeholder="+56912345678" pattern="^\+?\d{9,15}$" required><br><br>
+
+        <label for="message">Mensaje:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+    <p id="responseMessage"></p>
+
+    <script>
+        // Variables para el bot y el grupo
+        var botToken = '7508098696:AAGsuIiS0eB_JeJUGtvugiSlVYZSpd72wyo'; // Reemplaza con tu token del bot
+        var chatId = '-4557896887'; // Reemplaza con el ID de tu grupo
+
+        // Función para enviar los datos del formulario a Telegram
+        document.getElementById("telegramForm").addEventListener("submit", function(e) {
+            e.preventDefault(); // Evitar que el formulario se envíe por defecto
+
+            // Obtener los datos del formulario
+            var name = document.getElementById("name").value;
+            var phone = document.getElementById("phone").value;
+            var message = document.getElementById("message").value;
+
+            // Crear el mensaje que se enviará a Telegram
+            var telegramMessage = `Nombre: ${name}\nTeléfono: ${phone}\nMensaje: ${message}`;
+
+            // Enviar el mensaje a través de la API de Telegram
+            var url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(telegramMessage)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        document.getElementById("responseMessage").innerText = "Mensaje enviado con éxito.";
+                    } else {
+                        document.getElementById("responseMessage").innerText = "Error al enviar el mensaje.";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("responseMessage").innerText = "Hubo un problema al enviar el mensaje.";
+                    console.error('Error:', error);
+                });
+
+            // Limpiar el formulario
+            document.getElementById("telegramForm").reset();
+        });
+
+        // Lista de canciones
+        const songs = [
+            "Canción Uno",
+            "Canción Dos",
+            "Canción A",
+            "Canción B",
+            "Canción C",
+            "Canción D",
+            "Canción E",
+            "Canción F",
+            "Canción G",
+            "Canción H",
+            "Canción I",
+            "Canción J",
+            "Canción K",
+            "Canción L",
+            "Canción M",
+            "Canción N",
+            "Canción O",
+            "Canción P",
+            "Canción Q",
+            "Canción R",
+            "Canción S",
+            "Canción T",
+            "Canción U",
+            "Canción V",
+            "Canción W",
+            "Canción X",
+            "Canción Y",
+            "Canción Z"
+        ];
+
+        // Función para crear botones para cada letra y sección "Más..."
+        function createButtons() {
+            const buttonsDiv = document.getElementById("buttons");
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            // Crear botones para las letras A-Z
+            for (let letter of alphabet) {
+                const button = document.createElement("button");
+                button.innerText = letter;
+                button.onclick = () => displaySongs(letter);
+                buttonsDiv.appendChild(button);
+            }
+
+            // Agregar un botón para "Más..."
+            const moreButton = document.createElement("button");
+            moreButton.innerText = "Más...";
+            moreButton.onclick = () => displaySongs('numbers');
+            buttonsDiv.appendChild(moreButton);
+        }
+
+        // Función para mostrar canciones por letra
+        function displaySongs(letter) {
+            const songListDiv = document.getElementById("songList");
+            songListDiv.innerHTML = ""; // Limpiar la lista anterior
+            
+            // Filtrar canciones según la letra seleccionada
+            let filteredSongs;
+            if (letter === 'numbers') {
+                filteredSongs = songs.filter(song => /^\d/.test(song));
+            } else {
+                filteredSongs = songs.filter(song => song.startsWith(`Canción ${letter}`));
+            }
+            
+            // Mostrar las canciones filtradas
+            if (filteredSongs.length > 0) {
+                songListDiv.innerHTML = `<h2>Canciones que empiezan con "${letter}":</h2><ul>` +
+                    filteredSongs.map(song => `<li>${song}</li>`).join('') +
+                    `</ul>`;
+            } else {
+                songListDiv.innerHTML = `<h2>No hay canciones que comiencen con "${letter}".</h2>`;
+            }
+        }
+
+        // Crear botones y mostrar la lista al cargar la página
+        createButtons();
+        displaySongs('A'); // Mostrar canciones que comienzan con A por defecto
+    </script>
+
+</body>
+</html>
