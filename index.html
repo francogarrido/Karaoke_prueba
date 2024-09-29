@@ -8,10 +8,34 @@
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-image: url('\imagenprueba.jpg'); /* Reemplaza con tu imagen de fondo */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: white;
         }
+
         h1, h2 {
-            color: #333;
+            color: white;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para el título */
+            padding: 10px;
+            border-radius: 10px;
         }
+
+        #songList, form, #anniversarySection {
+            background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente para texto y formulario */
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 20px auto;
+            color: white;
+        }
+
         button {
             margin: 5px;
             padding: 10px 15px;
@@ -20,19 +44,72 @@
             color: white;
             cursor: pointer;
             border-radius: 5px;
+            width: 100%;
+            font-size: 1.1rem;
         }
+
         button:hover {
             background-color: #0056b3;
         }
-        ul {
-            list-style-type: none;
-            padding-left: 0;
+
+        #buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            gap: 5px;
+            margin-bottom: 20px;
         }
-        li {
-            margin: 5px 0;
+
+        input[type="text"], input[type="tel"], textarea {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-        form {
+
+        input[type="submit"] {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            font-size: 1.1rem;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        /* Video section */
+        #anniversarySection {
+            text-align: center;
             margin-top: 20px;
+        }
+
+        #anniversaryVideo {
+            display: none; /* Oculto inicialmente */
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        /* Ajustes para pantallas pequeñas */
+        @media (max-width: 600px) {
+            h1, h2 {
+                font-size: 1.5rem;
+            }
+            button {
+                font-size: 1rem;
+            }
+            input[type="text"], input[type="tel"], textarea, input[type="submit"] {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -46,20 +123,62 @@
     <h1>Formulario de Contacto</h1>
     <form id="telegramForm">
         <label for="name">Nombre:</label>
-        <input type="text" id="name" name="name" required><br><br>
+        <input type="text" id="name" name="name" required>
 
         <label for="phone">Teléfono:</label>
-        <input type="tel" id="phone" name="phone" placeholder="+56912345678" pattern="^\+?\d{9,15}$" required><br><br>
+        <input type="tel" id="phone" name="phone" placeholder="+56912345678" pattern="^\+?\d{9,15}$" required>
 
-        <label for="message">Mensaje:</label><br>
-        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+        <label for="message">Mensaje:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
 
         <input type="submit" value="Enviar">
     </form>
 
     <p id="responseMessage"></p>
 
+    <!-- Sección de Aniversario -->
+    <div id="anniversarySection">
+        <h1>Aniversario</h1>
+        <button id="anniversaryButton" onclick="showVideo()">Ver Video de Aniversario</button>
+        <video id="anniversaryVideo" controls>
+            <source src="\nombredelvideo.mp4" type="video/mp4"> <!-- Reemplaza con la ruta completa si es necesario -->
+            Tu navegador no soporta la reproducción de video.
+        </video>        
+        <p id="videoMessage" style="display: none; color: red;">El video no está disponible.</p> <!-- Mensaje en caso de error -->
+    </div>
+
     <script>
+        // Función para mostrar el video de aniversario
+        function showVideo() {
+            var video = document.getElementById('anniversaryVideo');
+            var message = document.getElementById('videoMessage');
+            var button = document.getElementById('anniversaryButton');
+            var videoSrc = video.querySelector('source').getAttribute('src');
+    
+            // Verificar si la fuente del video está vacía o incorrecta
+            if (!videoSrc || videoSrc === "\nombredelvideo .mp4") { 
+                // Si no has subido el video aún, mostrar mensaje
+                message.style.display = 'block';
+                video.style.display = 'none';
+            } else {
+                // Ocultar el mensaje y mostrar el video si está disponible
+                message.style.display = 'none';
+                video.style.display = 'block';
+    
+                // Reproducir el video automáticamente
+                video.play();
+    
+                // Cambiar el texto del botón para permitir ocultar el video
+                button.innerText = "Ocultar Video";
+                button.onclick = function() {
+                    video.pause();
+                    video.style.display = 'none';
+                    button.innerText = "Ver Video de Aniversario";
+                    button.onclick = showVideo; // Restaurar la función original
+                };
+            }
+        }
+
         // Variables para el bot y el grupo
         var botToken = '7508098696:AAGsuIiS0eB_JeJUGtvugiSlVYZSpd72wyo'; // Reemplaza con tu token del bot
         var chatId = '-4557896887'; // Reemplaza con el ID de tu grupo
@@ -99,56 +218,56 @@
     </script>
 
     <!-- Incluir el archivo externo de canciones -->
-<script src="canciones.js"></script>
+    <script src="canciones.js"></script>
 
-<script>
-    // Función para mostrar canciones por letra
-    function displaySongs(letter) {
-        const songListDiv = document.getElementById("songList");
-        songListDiv.innerHTML = ""; // Limpiar la lista anterior
-        
-        // Filtrar canciones según la letra seleccionada
-        let filteredSongs;
-        if (letter === 'numbers') {
-            filteredSongs = songs.filter(song => /^\d/.test(song.trim()));
-        } else {
-            filteredSongs = songs.filter(song => song.trim().toLowerCase().startsWith(letter.toLowerCase()));
+    <script>
+        // Función para mostrar canciones por letra
+        function displaySongs(letter) {
+            const songListDiv = document.getElementById("songList");
+            songListDiv.innerHTML = ""; // Limpiar la lista anterior
+            
+            // Filtrar canciones según la letra seleccionada
+            let filteredSongs;
+            if (letter === 'numbers') {
+                filteredSongs = songs.filter(song => /^\d/.test(song.trim()));
+            } else {
+                filteredSongs = songs.filter(song => song.trim().toLowerCase().startsWith(letter.toLowerCase()));
+            }
+
+            // Mostrar las canciones filtradas
+            if (filteredSongs.length > 0) {
+                songListDiv.innerHTML = `<h2>Canciones que empiezan con "${letter}":</h2><ul>` +
+                    filteredSongs.map(song => `<li>${song}</li>`).join('') +
+                    `</ul>`;
+            } else {
+                songListDiv.innerHTML = `<h2>No hay canciones que comiencen con "${letter}".</h2>`;
+            }
         }
 
-        // Mostrar las canciones filtradas
-        if (filteredSongs.length > 0) {
-            songListDiv.innerHTML = `<h2>Canciones que empiezan con "${letter}":</h2><ul>` +
-                filteredSongs.map(song => `<li>${song}</li>`).join('') +
-                `</ul>`;
-        } else {
-            songListDiv.innerHTML = `<h2>No hay canciones que comiencen con "${letter}".</h2>`;
-        }
-    }
+        // Función para crear botones para cada letra y sección "Más..."
+        function createButtons() {
+            const buttonsDiv = document.getElementById("buttons");
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    // Función para crear botones para cada letra y sección "Más..."
-    function createButtons() {
-        const buttonsDiv = document.getElementById("buttons");
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            // Crear botones para las letras A-Z
+            for (let letter of alphabet) {
+                const button = document.createElement("button");
+                button.innerText = letter;
+                button.onclick = () => displaySongs(letter);
+                buttonsDiv.appendChild(button);
+            }
 
-        // Crear botones para las letras A-Z
-        for (let letter of alphabet) {
-            const button = document.createElement("button");
-            button.innerText = letter;
-            button.onclick = () => displaySongs(letter);
-            buttonsDiv.appendChild(button);
+            // Agregar un botón para "Más..."
+            const moreButton = document.createElement("button");
+            moreButton.innerText = "Más...";
+            moreButton.onclick = () => displaySongs('numbers');
+            buttonsDiv.appendChild(moreButton);
         }
 
-        // Agregar un botón para "Más..."
-        const moreButton = document.createElement("button");
-        moreButton.innerText = "Más...";
-        moreButton.onclick = () => displaySongs('numbers');
-        buttonsDiv.appendChild(moreButton);
-    }
-
-    // Crear botones y mostrar la lista al cargar la página
-    createButtons();
-    displaySongs('A'); // Mostrar canciones que comienzan con A por defecto
-</script>
+        // Crear botones y mostrar la lista al cargar la página
+        createButtons();
+        displaySongs('A'); // Mostrar canciones que comienzan con A por defecto
+    </script>
 
 </body>
 </html>
