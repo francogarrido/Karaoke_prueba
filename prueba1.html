@@ -150,7 +150,7 @@
         <h1>Fiesta pachanga Vol 2</h1>
         <button id="anniversaryButton" onclick="showVideo()">Ver Video de Aniversario</button>
         <video id="anniversaryVideo" controls style="display: none;">
-            <source src="/PACHANGA VOLUMEN 2 TANUKI RESTOBAR FT. CLUB HOLANDESA.mp4" type="video/mp4"> <!-- Reemplaza con la ruta a tu video descargado -->
+            <source src="PACHANGA VOLUMEN 2 TANUKI RESTOBAR FT. CLUB HOLANDESA.mp4" type="video/mp4"> <!-- Reemplaza con la ruta a tu video descargado -->
             Tu navegador no soporta la reproducción de video.
         </video>
         <p id="videoMessage" style="display: none; color: red;">El video no está disponible o no puede ser reproducido.</p>
@@ -165,7 +165,7 @@
             var videoSrc = video.querySelector('source').getAttribute('src');
         
             // Verificar si la fuente del video es válida
-            if (!videoSrc || videoSrc === "/PACHANGA VOLUMEN 2 TANUKI RESTOBAR FT. CLUB HOLANDESA.mp4") { 
+            if (!videoSrc || videoSrc === "PACHANGA VOLUMEN 2 TANUKI RESTOBAR FT. CLUB HOLANDESA.mp4") { 
                 // Si no se encuentra el video, mostrar mensaje
                 message.style.display = 'block';
                 video.style.display = 'none';
