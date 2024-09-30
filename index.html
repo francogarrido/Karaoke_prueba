@@ -11,31 +11,35 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background-image: url('\imagenprueba.jpg'); /* Reemplaza con tu imagen de fondo */
+            background-image: url('imagenprueba.jpg'); /* Reemplaza con tu imagen de fondo */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
+            min-height: 100vh; /* Asegurarse de que el fondo cubra toda la pantalla */
             color: white;
         }
-
+    
         h1, h2 {
             color: white;
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para el título */
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para el título */
             padding: 10px;
             border-radius: 10px;
+            margin: 0; /* Eliminar margen para evitar el espacio extra */
         }
-
+    
         #songList, form, #anniversarySection {
-            background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente para texto y formulario */
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo negro semitransparente para texto y formulario */
             padding: 20px;
             border-radius: 10px;
             max-width: 600px;
             margin: 20px auto;
             color: white;
+            width: 90%; /* Ajuste para pantallas pequeñas, usa 90% del ancho */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Sombra para dar más profundidad */
         }
-
+    
         button {
             margin: 5px;
             padding: 10px 15px;
@@ -47,71 +51,79 @@
             width: 100%;
             font-size: 1.1rem;
         }
-
+    
         button:hover {
             background-color: #0056b3;
         }
-
+    
         #buttons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
             gap: 5px;
             margin-bottom: 20px;
         }
-
+    
         input[type="text"], input[type="tel"], textarea {
             width: 100%;
-            max-width: 500px;
-            padding: 10px;
-            font-size: 1rem;
+            padding: 6px; /* Aumentar el padding para que se vea más grande */
+            font-size: 1.2rem; /* Tamaño de fuente más grande */
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
+    
         input[type="submit"] {
             width: 100%;
-            max-width: 500px;
-            padding: 10px;
-            font-size: 1.1rem;
+            padding: 15px;
+            font-size: 1.3rem;
             background-color: #28a745;
             border: none;
             color: white;
             border-radius: 5px;
             cursor: pointer;
         }
-
+        
         input[type="submit"]:hover {
             background-color: #218838;
         }
-
+        
         /* Video section */
         #anniversarySection {
             text-align: center;
-            margin-top: 20px;
+            width: 90%; /* Ajuste de ancho para pantallas pequeñas */
+            margin: 20px auto;
         }
-
+    
+        /* Estilos para el iframe del video */
         #anniversaryVideo {
-            display: none; /* Oculto inicialmente */
             width: 100%;
-            max-width: 600px;
+            height: auto; /* Mantiene la relación de aspecto */
+            aspect-ratio: 16/9; /* Relación de aspecto para el video */
             border-radius: 10px;
             margin-top: 15px;
+            display: none; /* Inicialmente oculto */
         }
-
+    
         /* Ajustes para pantallas pequeñas */
         @media (max-width: 600px) {
             h1, h2 {
                 font-size: 1.5rem;
             }
+        
             button {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
+        
             input[type="text"], input[type="tel"], textarea, input[type="submit"] {
-                font-size: 1rem;
+                font-size: 1.2rem; /* Hacer más grande el texto en formularios en móviles */
+            }
+        
+            form, #anniversarySection {
+                width: 95%; /* Usar más espacio en pantallas pequeñas */
             }
         }
     </style>
+    
 </head>
 <body>
 
@@ -138,46 +150,46 @@
 
     <!-- Sección de Aniversario -->
     <div id="anniversarySection">
-        <h1>Aniversario</h1>
+        <h1>Fiesta pachanga Vol 2</h1>
         <button id="anniversaryButton" onclick="showVideo()">Ver Video de Aniversario</button>
-        <video id="anniversaryVideo" controls>
-            <source src="\nombredelvideo.mp4" type="video/mp4"> <!-- Reemplaza con la ruta completa si es necesario -->
-            Tu navegador no soporta la reproducción de video.
-        </video>        
-        <p id="videoMessage" style="display: none; color: red;">El video no está disponible.</p> <!-- Mensaje en caso de error -->
+    
+        <!-- Iframe para el video desde Google Drive (oculto inicialmente) -->
+        <iframe id="anniversaryVideo" src="" width="560" height="315" frameborder="0" style="display: none;"></iframe>
+    
+        <p id="videoMessage" style="display: none; color: red;">El video no está disponible o no puede ser reproducido.</p>
     </div>
-
+    
     <script>
         // Función para mostrar el video de aniversario
         function showVideo() {
             var video = document.getElementById('anniversaryVideo');
             var message = document.getElementById('videoMessage');
             var button = document.getElementById('anniversaryButton');
-            var videoSrc = video.querySelector('source').getAttribute('src');
-    
-            // Verificar si la fuente del video está vacía o incorrecta
-            if (!videoSrc || videoSrc === "\nombredelvideo .mp4") { 
-                // Si no has subido el video aún, mostrar mensaje
-                message.style.display = 'block';
+        
+            // Opción 1: Enlace al video de Google Drive
+            var googleDriveSrc = "https://drive.google.com/file/d/14zbr1wuM3cwm5X-OKhsRGnu3AAhMpBQ5/preview";
+            
+            // Opción 2: Enlace al video de YouTube
+            // var youtubeSrc = "https://www.youtube.com/embed/oNdZPSUcWD8"; // Descomentar para usar YouTube
+            
+            // Aquí puedes elegir cuál usar. Por ahora, usaré Google Drive.
+            var videoSrc = googleDriveSrc; // Cambiar a youtubeSrc para usar YouTube
+            
+            // Mostrar el iframe con el video
+            video.src = videoSrc;
+            video.style.display = 'block';
+            message.style.display = 'none';
+        
+            // Cambiar el texto del botón para permitir ocultar el video
+            button.innerText = "Ocultar Video";
+            button.onclick = function() {
                 video.style.display = 'none';
-            } else {
-                // Ocultar el mensaje y mostrar el video si está disponible
-                message.style.display = 'none';
-                video.style.display = 'block';
-    
-                // Reproducir el video automáticamente
-                video.play();
-    
-                // Cambiar el texto del botón para permitir ocultar el video
-                button.innerText = "Ocultar Video";
-                button.onclick = function() {
-                    video.pause();
-                    video.style.display = 'none';
-                    button.innerText = "Ver Video de Aniversario";
-                    button.onclick = showVideo; // Restaurar la función original
-                };
-            }
+                button.innerText = "Ver Video de Aniversario";
+                button.onclick = showVideo; // Restaurar la función original
+            };
         }
+
+    
 
         // Variables para el bot y el grupo
         var botToken = '7508098696:AAGsuIiS0eB_JeJUGtvugiSlVYZSpd72wyo'; // Reemplaza con tu token del bot
