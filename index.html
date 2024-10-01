@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Lista de Canciones y Formulario a Telegram</title>
     <style>
         body {
@@ -38,6 +39,14 @@
             color: white;
             width: 90%; /* Ajuste para pantallas pequeñas, usa 90% del ancho */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Sombra para dar más profundidad */
+        }
+
+        iframe {
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 15px;
         }
     
         button {
@@ -97,6 +106,7 @@
         /* Estilos para el iframe del video */
         #anniversaryVideo {
             width: 100%;
+            max-width: 600px;
             height: auto; /* Mantiene la relación de aspecto */
             aspect-ratio: 16/9; /* Relación de aspecto para el video */
             border-radius: 10px;
@@ -149,46 +159,48 @@
     <p id="responseMessage"></p>
 
     <!-- Sección de Aniversario -->
-    <div id="anniversarySection">
-        <h1>Fiesta pachanga Vol 2</h1>
-        <button id="anniversaryButton" onclick="showVideo()">Ver Video de Aniversario</button>
-    
-        <!-- Iframe para el video desde Google Drive (oculto inicialmente) -->
-        <iframe id="anniversaryVideo" src="" width="560" height="315" frameborder="0" style="display: none;"></iframe>
-    
-        <p id="videoMessage" style="display: none; color: red;">El video no está disponible o no puede ser reproducido.</p>
-    </div>
-    
-    <script>
-        // Función para mostrar el video de aniversario
-        function showVideo() {
-            var video = document.getElementById('anniversaryVideo');
-            var message = document.getElementById('videoMessage');
-            var button = document.getElementById('anniversaryButton');
-        
-            // Opción 1: Enlace al video de Google Drive
-            var googleDriveSrc = "https://drive.google.com/file/d/14zbr1wuM3cwm5X-OKhsRGnu3AAhMpBQ5/preview";
-            
-            // Opción 2: Enlace al video de YouTube
-            // var youtubeSrc = "https://www.youtube.com/embed/oNdZPSUcWD8"; // Descomentar para usar YouTube
-            
-            // Aquí puedes elegir cuál usar. Por ahora, usaré Google Drive.
-            var videoSrc = googleDriveSrc; // Cambiar a youtubeSrc para usar YouTube
-            
-            // Mostrar el iframe con el video
-            video.src = videoSrc;
-            video.style.display = 'block';
-            message.style.display = 'none';
-        
-            // Cambiar el texto del botón para permitir ocultar el video
-            button.innerText = "Ocultar Video";
-            button.onclick = function() {
-                video.style.display = 'none';
-                button.innerText = "Ver Video de Aniversario";
-                button.onclick = showVideo; // Restaurar la función original
-            };
-        }
+    <!-- Sección de Aniversario -->
+<div id="anniversarySection">
+    <h1>Fiesta pachanga Vol 2</h1>
+    <button id="anniversaryButton" onclick="showVideo()">Ver Video de Aniversario</button>
 
+    <!-- Video para el video local -->
+    <video id="anniversaryVideo" controls style="display: none; width: 100%; max-width: 600px; border-radius: 10px;">
+    <source src="pachanga_vol2.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de video.
+</video>
+
+
+    <p id="videoMessage" style="display: none; color: red;">El video no está disponible o no puede ser reproducido.</p>
+</div>
+
+<script>
+    // Función para mostrar el video de aniversario
+    function showVideo() {
+        var video = document.getElementById('anniversaryVideo');
+        var message = document.getElementById('videoMessage');
+        var button = document.getElementById('anniversaryButton');
+        
+        // Mostrar el video
+        video.style.display = 'block';
+        message.style.display = 'none';
+
+        // Asegurarse de que el video esté disponible y reproducirlo
+        video.play().catch(function(error) {
+            console.error("Error al reproducir el video:", error);
+            message.style.display = 'block';
+            video.style.display = 'none';
+        });
+
+        // Cambiar el texto del botón para permitir ocultar el video
+        button.innerText = "Ocultar Video";
+        button.onclick = function() {
+            video.pause();
+            video.style.display = 'none';
+            button.innerText = "Ver Video de Aniversario";
+            button.onclick = showVideo; // Restaurar la función original
+        };
+    }
     
 
         // Variables para el bot y el grupo
