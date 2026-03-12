@@ -175,32 +175,22 @@
 </div>
 
 <script>
-    // Función para mostrar el video de aniversario
-    function showVideo() {
-        var video = document.getElementById('anniversaryVideo');
-        var message = document.getElementById('videoMessage');
-        var button = document.getElementById('anniversaryButton');
-        
+   // Función para mostrar u ocultar el video de aniversario
+function showVideo() {
+    var video = document.getElementById('anniversaryVideo');
+    var button = document.getElementById('anniversaryButton');
+
+    if (video.style.display === "none" || video.style.display === "") {
         // Mostrar el video
-        video.style.display = 'block';
-        message.style.display = 'none';
-
-        // Asegurarse de que el video esté disponible y reproducirlo
-        video.play().catch(function(error) {
-            console.error("Error al reproducir el video:", error);
-            message.style.display = 'block';
-            video.style.display = 'none';
-        });
-
-        // Cambiar el texto del botón para permitir ocultar el video
+        video.style.display = "block";
         button.innerText = "Ocultar Video";
-        button.onclick = function() {
-            video.pause();
-            video.style.display = 'none';
-            button.innerText = "Ver Video de Aniversario";
-            button.onclick = showVideo; // Restaurar la función original
-        };
+    } else {
+        // Ocultar el video
+        video.pause();
+        video.style.display = "none";
+        button.innerText = "Ver Video de Aniversario";
     }
+}
     
 
         // Variables para el bot y el grupo
